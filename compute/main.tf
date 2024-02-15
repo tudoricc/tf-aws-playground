@@ -90,18 +90,19 @@ module "elb_http" {
   subnets         = local.public_subnets
   security_groups = [local.sg_id_lb]
   internal        = false
-
+  #in order for 443 to work you will need an ssl certificate created. 
+  # as this is a testing exercise I will use another port to not have to add aditional charges to my acc
   listener = [
     {
       instance_port     = 8080
       instance_protocol = "HTTP"
-      lb_port           = 443
-      lb_protocol       = "HTTPS"
+      lb_port           = 80
+      lb_protocol       = "HTTP"
     }
   ]
 
   health_check = {
-    target              = "HTTP:443/"
+    target              = "HTTP:8080/"
     interval            = 30
     healthy_threshold   = 2
     unhealthy_threshold = 2
